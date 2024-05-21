@@ -82,7 +82,8 @@ def goldberg(edges, N, s, t):
 
 
 def main():
-    routes, to_remove, C, N = parse_input()
+    routes, to_remove, C, N, M, P = parse_input()
+    s, t = 0, N-1
     print(routes)
     # TODO replace with binary search
     Cmax = 9999999999999
