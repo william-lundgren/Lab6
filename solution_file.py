@@ -30,11 +30,20 @@ def parse_input():
     return routes, to_remove, C, N
 
 
+def push(u, v, f, h):
+    if xf[u] > 0 and 𝓁[u] == 𝓁[v] + 1: return
+    delta = min(xf[u], c[u][v] - f[u][v])
+    f[u][v] += delta
+    f[v][u] -= delta
+    xf[u] -= delta
+    xf[v] += delta
+
+
 def goldberg(edges):
+    # GOLDBERG TIME
+
     # duplicate graph
     edges = [edge.reverse_node() for edge in edges] + edges
-
-    # GOLDBERG TIME
 
 
 def main():
@@ -43,7 +52,6 @@ def main():
     # TODO replace with binary search
     Cmax = 9999999999999
     i = 0
-    # test change again
 
     goldberg(routes)
 
