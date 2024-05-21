@@ -43,6 +43,7 @@ def main():
     # TODO replace with binary search
     Cmax = 9999999999999
     i = 0
+    # test change
 
     goldberg(routes)
 
