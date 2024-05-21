@@ -7,6 +7,9 @@ class Route:
         self.node_2 = n2
         self.flow = c
 
+    def reverse_node(self):
+        return Route(self.node_2, self.node_1, self.flow)
+
     def __str__(self):
         return f"({self.node_1}, {self.node_2}, Flow:{self.flow})"
 
@@ -26,21 +29,22 @@ def parse_input():
     to_remove = [int(input()) for _ in range(P)]
     return routes, to_remove, C, N
 
-def Goldberg(edges):
-    pass
+
+def goldberg(edges):
+    # duplicate graph
+    edges = [edge.reverse_node() for edge in edges] + edges
+
     # GOLDBERG TIME
 
 
 def main():
     routes, to_remove, C, N = parse_input()
-
+    print(routes)
     # TODO replace with binary search
     Cmax = 9999999999999
     i = 0
-    while Cmax > C:
-        routes.pop(to_remove.pop(0))
-        Cmax = Goldberg(routes)
-        i += 1
+
+    goldberg(routes)
 
 
 if __name__ == "__main__":
