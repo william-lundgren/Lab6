@@ -24,19 +24,22 @@ def parse_input():
 
     # Edges to be removed
     to_remove = [int(input()) for _ in range(P)]
-    return routes, to_remove
+    return routes, to_remove, C, N
 
-def algorithm():
+def Goldberg(edges):
+    pass
     # GOLDBERG TIME
 
 
 def main():
-    routes, removed = parse_input()
+    routes, to_remove, C, N = parse_input()
 
-
-
-
-    algorithm()
+    Cmax = 9999999999999
+    i = 0
+    while Cmax > C:
+        routes.pop(to_remove.pop(0))
+        Cmax = Goldberg(routes)
+        i += 1
 
 
 if __name__ == "__main__":
