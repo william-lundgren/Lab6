@@ -1,10 +1,7 @@
-import sys
-
-
 class FlowNetwork:
     def __init__(self, routes, N_nodes, capacities, s, t) -> None:
         #See wikipedia on push-relabel
-        self.routes = routes [[u,v],[u,v], ]
+        self.routes = routes # [[u,v],[u,v], .... ]
         self.N_nodes = N_nodes
         self.capacities = capacities
         self.s = s
@@ -22,24 +19,6 @@ class FlowNetwork:
         self.Ef = self.routes.copy() #assuming all capacities != 0 for now?
 
 
-
-
-class Route:
-    def __init__(self, n1, n2, c):
-        self.node_1 = n1
-        self.node_2 = n2
-        self.capacity = c
-
-    def reverse_node(self):
-        return Route(self.node_2, self.node_1, self.flow)
-
-    def __str__(self):
-        return f"({self.node_1}, {self.node_2}, Flow:{self.flow})"
-
-    def __repr__(self):
-        return self.__str__()
-
-
 def parse_input():
     # Input() takes line by line
     N, M, C, P = list(map(int, input().split()))
@@ -53,8 +32,8 @@ def parse_input():
     return routes, to_remove, C, N
 
 
-def goldberg(edges, N, s, t):
-    # duplicate graph and reverse, essentially making it undirected
+def edmondKarp(edges, N, s, t):
+    # duplicate graph and reverse, essentially making it undirected 
     edges = [edge.reverse_node() for edge in edges] + edges
     n_e = len(edges)
     f_e = [0 for _ in range(n_e)]
@@ -67,7 +46,7 @@ def main():
     routes, to_remove, C, N, M, P = parse_input()
     s, t = 0, N-1
     print(routes)
-    split = 
+    split = 9
     Cmax = 9999999999999
     i = 0
     # test change again
