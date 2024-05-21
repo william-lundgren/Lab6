@@ -27,8 +27,10 @@ def parse_input():
     return routes, to_remove, C, N
 
 def Goldberg(edges):
-    pass
-    # GOLDBERG TIME
+    # TODO Duplicate edges in other direction (undirected)
+    # Note that if the flow still works out
+
+    # TODO GOLDBERG TIME
 
 
 def main():
