@@ -3,25 +3,43 @@ import sys
 
 class FlowNetwork:
     def __init__(self, routes, N_nodes, capacities, s, t) -> None:
-        #See wikipedia on push-relabel
-        self.routes = routes [[u,v],[u,v], ]
+        # See wikipedia on push-relabel
+        self.routes = routes # 2d array routes[u][v]
         self.N_nodes = N_nodes
         self.capacities = capacities
         self.s = s
         self.t = t
         self.N_edges = len(routes)
 
-        self.f = [0 for _ in range(N_edges)]
-        
+        self.f = [0 for _ in range(self.N_edges)]
+
         self.xf = [0 for _ in range(N_nodes)]
         self.cf = capacities.copy()
 
         self.labels = [0 for _ in range(N_nodes)]
         self.labels[s] = N_nodes
 
-        self.Ef = self.routes.copy() #assuming all capacities != 0 for now?
+        self.Ef = self.routes.copy()  # assuming all capacities != 0 for now?
 
+    def push(self, u, v):
+        if not (self.xf[u] > 0 and self.labels[u] == self.labels[v] + 1):
+            return
+        delta = min(self.xf[u], self.capacities[u][v] - self.f[u][v])
+        self.routes[u][v] += delta
+        self.f[v][u] -= delta
+        self.xf[u] -= delta
+        self.xf[v] += delta
 
+    def relabel(self, u):
+        # vi vill typ ha routes som en 2d array för detta blir feeeett enkelt då
+        list2 = []
+        for v in self.routes[u]:
+            if self.cf[u][v] > 0:
+                if not (self.xf[u] > 0 and self.labels[u] <= self.labels[v]):
+                    raise ValueError("Wrong")
+                list2.append(self.labels[v])
+
+        self.labels[u] = 1 + min(list2)
 
 
 class Route:
@@ -31,10 +49,10 @@ class Route:
         self.capacity = c
 
     def reverse_node(self):
-        return Route(self.node_2, self.node_1, self.flow)
+        return Route(self.node_2, self.node_1, self.capacity)
 
     def __str__(self):
-        return f"({self.node_1}, {self.node_2}, Flow:{self.flow})"
+        return f"({self.node_1}, {self.node_2}, Flow:{self.capacity})"
 
     def __repr__(self):
         return self.__str__()
@@ -67,7 +85,7 @@ def main():
     routes, to_remove, C, N, M, P = parse_input()
     s, t = 0, N-1
     print(routes)
-    split = 
+    # TODO replace with binary search
     Cmax = 9999999999999
     i = 0
     # test change again
