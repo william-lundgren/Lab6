@@ -1,18 +1,27 @@
 from collections import deque
+import time
+import sys
 
 
 def binary(split, prev_split, to_remove, N, M, P, edges, capacities, s, t, Cmax):
 
     attempt_to_remove = to_remove[:split]
     attempt_edges = [edge for i, edge in enumerate(edges) if i not in attempt_to_remove]
-    #print("atetetet",attempt_edges)
     new_cmax = edmondKarp(N, M, attempt_edges, capacities,  s, t)
     
-    # brute_force_limit = 3
-    # if abs(split - prev_split) < brute_force_limit:
-    #     low = min(split, prev_split)
-        
-    # print(split, prev_split)
+    brute_force_limit = 2
+    if abs(split - prev_split) < brute_force_limit:
+        low = min(split, prev_split)
+        high = low+brute_force_limit
+        low = low-brute_force_limit
+        low = 0 if low < 0 else low
+        for split2 in range(low, high):
+            attempt_to_remove = to_remove[:split2]
+            attempt_edges = [edge for i, edge in enumerate(edges) if i not in attempt_to_remove]
+            prev_cmax = new_cmax
+            new_cmax = edmondKarp(N, M, attempt_edges, capacities,  s, t)
+            if new_cmax < Cmax:
+                return split2-1, prev_cmax
 
     
     if prev_split != -1:
@@ -23,8 +32,7 @@ def binary(split, prev_split, to_remove, N, M, P, edges, capacities, s, t, Cmax)
     else: 
         diff = abs(P-1 - split)
     prev_split = split
-    # if new_cmax == Cmax: 
-    #     print()
+
     if new_cmax > Cmax:
         split += diff//2
     else:
@@ -111,45 +119,33 @@ def edmondKarp(N, M, edges, capacities,  s, t):
 
         totalflow += delta
         
-        #Second traceback, to update c_f and f
+        #Second traceback, to update flow
         current = t
         while current != s:
             preceding = pred[current]
-            # c_f[current, preceding] -= delta
-            # c_f[preceding, current] -= delta
             flow[preceding][current] += delta
-            # flow[current][preceding] -= delta
             current = preceding
              
-                    
-                    
-
-
-        
-        
-            
-                    
-
-
 def main():
+    tstart = time.time()
     N, M, C, P, edges, capacities, to_remove = parse_input()
     s, t = 0, N-1
     print(*binary(P//2, -1, to_remove, N, M, P, edges, capacities, s, t, C))
-    #binary search
-    # split = P//2
-    # while low<high:
-    #     attempt_ix_to_remove = to_remove[low:high]
-    #     attemps_edges = [edge for i, edge in edges if i not in attempt_ix_to_remove]
-    #     attempt_flow = edmondKarp(N, M, attemps_edges, capacities,  s, t)
-    #     if attempt_flow < C: #we removed too much
-            
-    # Cmax = edmondKarp(N, M, edges, capacities, s, t)
-    # print(Cmax)
+    sys.stderr.write(f"Time: {time.time()-tstart}\n")
+
+    # # Linear just to check edmond is working
+    # prev_cmax = 999999999999
+    # new_cmax = 999999999999
+    # steps = 1
+    # while new_cmax >= C:
+    #     attempt_to_remove = to_remove[:steps]
+    #     attempt_edges = [edge for i, edge in enumerate(edges) if i not in attempt_to_remove]
+    #     #print("atetetet",attempt_edges)
+    #     prev_cmax = new_cmax
+    #     new_cmax = edmondKarp(N, M, attempt_edges, capacities,  s, t)
+    #     steps +=1
     
-
-
+    # print(steps-2, prev_cmax)
+    
 if __name__ == "__main__":
     main()
-    
-
-    
