@@ -9,6 +9,7 @@ def binary(split, prev_split, to_remove, N, M, P, edges, capacities, s, t, Cmax)
     attempt_edges = [edge for i, edge in enumerate(edges) if i not in attempt_to_remove]
     new_cmax = edmondKarp(N, M, attempt_edges, capacities,  s, t)
     
+    #Brute force when sufficiently close
     brute_force_limit = 2
     if abs(split - prev_split) < brute_force_limit:
         low = min(split, prev_split)
@@ -23,14 +24,8 @@ def binary(split, prev_split, to_remove, N, M, P, edges, capacities, s, t, Cmax)
             if new_cmax < Cmax:
                 return split2-1, prev_cmax
 
-    
-    if prev_split != -1:
-        if split == prev_split: #We done
-            return split, new_cmax
 
-        diff = abs(prev_split-split)
-    else: 
-        diff = abs(P-1 - split)
+    diff = abs(prev_split-split)
     prev_split = split
 
     if new_cmax > Cmax:
