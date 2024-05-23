@@ -110,7 +110,6 @@ def edmondKarp(N, M, edges, capacities,  s, t):
         delta = None
         current = t
         while current != s:
-            # ##print('lalala')
             preceding = pred[current]
             d = capacities[preceding][current] - flow[preceding][current]
             if delta is None or d < delta:
@@ -130,7 +129,7 @@ def main():
     tstart = time.time()
     N, M, C, P, edges, capacities, to_remove = parse_input()
     s, t = 0, N-1
-    print(*binary(P//2, -1, to_remove, N, M, P, edges, capacities, s, t, C))
+    print(*binary(P//2, P-1, to_remove, N, M, P, edges, capacities, s, t, C))
     sys.stderr.write(f"Time: {time.time()-tstart}\n")
 
     # # Linear just to check edmond is working
